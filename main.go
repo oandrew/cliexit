@@ -146,9 +146,10 @@ func main() {
 				if o.observe() {
 					if *exitCmdFlag != "" {
 						exitCmd := exec.Command("bash", "-c", *exitCmdFlag)
-						exitCmd.Env = []string{
+						exitCmd.Env = exitCmd.Environ()
+						exitCmd.Env = append(exitCmd.Env,
 							fmt.Sprintf("TARGET_PID=%d", cmd.Process.Pid),
-						}
+						)
 						go func() {
 							exitCmd.Run()
 						}()
